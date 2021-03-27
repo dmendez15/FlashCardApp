@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter new set name"
+        android:id="@+id/et_setName"
+        android:textSize="16sp"
+        android:singleLine="true"
+        android:maxLength="25"
+        android:layout_marginHorizontal="20dp"
+        android:inputType="text"
+        android:autofillHints="Set name" />
+
+</LinearLayout>
