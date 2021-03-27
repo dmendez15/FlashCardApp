@@ -10,7 +10,7 @@
         android:id="@+id/et_setName"
         android:textSize="16sp"
         android:singleLine="true"
-        android:maxLength="25"
+        android:maxLength="20"
         android:layout_marginHorizontal="20dp"
         android:inputType="text"
         android:autofillHints="Set name" />
