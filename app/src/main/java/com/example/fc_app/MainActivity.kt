@@ -3,8 +3,9 @@ package com.example.fc_app
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
@@ -12,13 +13,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        showNewSetTextDialog() //Called when the floating action button on the home screen is clicked.
-    }
+        var cardSetList = mutableListOf(
+                CardSet("Biology", "Card Amount : 0")
+        )
 
-    private fun showNewSetTextDialog(){
+        val adapter = CardSetAdapter(cardSetList)
+        val rvSetScreen: RecyclerView = findViewById(R.id.rvSetScreen)
+        rvSetScreen.adapter = adapter
+        rvSetScreen.layoutManager = LinearLayoutManager(this)
 
-        val textView = findViewById<TextView>(R.id.textView)
-       val floatingAB = findViewById<FloatingActionButton>(R.id.floatingActionButton)
+        //Dialog that will create a new set of cards.
+        val floatingAB = findViewById<FloatingActionButton>(R.id.floatingActionButton)
 
         floatingAB.setOnClickListener {
             val builder = AlertDialog.Builder(this)
@@ -29,8 +34,11 @@ class MainActivity : AppCompatActivity() {
             with(builder){
                 setTitle("Create new set")
                 setPositiveButton("Save"){dialog, which ->
-                    //Add new card to home screen
-                    textView.text = editText.text.toString()
+                    //Add new set to the home screen
+                    val title = editText.text.toString()
+                    val set = CardSet(title, "Card Amount: 0")
+                    cardSetList.add(set)
+                    adapter.notifyItemInserted(cardSetList.size -1)
                 }
                 setNegativeButton("Cancel"){dialog, which ->
                     //Cancel

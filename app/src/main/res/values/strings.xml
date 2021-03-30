@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FC_App</string>
+    <string name="app_title">Flash Card</string>
+    <string name="btn_desc">Create a new set</string>
 </resources>
