@@ -13,9 +13,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var cardSetList = mutableListOf(
-                CardSet("Biology", "Card Amount : 0")
-        )
+        val sharedPref = getSharedPreferences("myPref", MODE_PRIVATE)
+        val prefEditor = sharedPref.edit()
+
+        var cardSetList = mutableListOf<CardSet>()
 
         val adapter = CardSetAdapter(cardSetList)
         val rvSetScreen: RecyclerView = findViewById(R.id.rvSetScreen)
@@ -23,20 +24,21 @@ class MainActivity : AppCompatActivity() {
         rvSetScreen.layoutManager = LinearLayoutManager(this)
 
         //Dialog that will create a new set of cards.
+        //When the floating action button is clicked, create a brand new set.
         val floatingAB = findViewById<FloatingActionButton>(R.id.floatingActionButton)
-
         floatingAB.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             val inflater = layoutInflater
-            val dialogLayout = inflater.inflate(R.layout.new_set_layout,null)
+            val dialogLayout = inflater.inflate(R.layout.new_set_dialouge_box,null)
             val editText = dialogLayout.findViewById<EditText>(R.id.et_setName)
 
             with(builder){
                 setTitle("Create new set")
                 setPositiveButton("Save"){dialog, which ->
                     //Add new set to the home screen
-                    val title = editText.text.toString()
-                    val set = CardSet(title, "Card Amount: 0")
+                    val title = editText.text.toString() //Get the text the user typed.
+                    val cardTxt = "Card Amount: 0"
+                    val set = CardSet(title, cardTxt)
                     cardSetList.add(set)
                     adapter.notifyItemInserted(cardSetList.size -1)
                 }
