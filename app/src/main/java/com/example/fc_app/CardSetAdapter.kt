@@ -6,27 +6,39 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CardSetAdapter(
-        var sets: List<CardSet>
-) : RecyclerView.Adapter<CardSetAdapter.CardSetViewHolder>() {
-
-    inner class CardSetViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+class CardSetAdapter(private val sets: List<CardSet>, private val listener: OnItemClickListener) : RecyclerView.Adapter<CardSetAdapter.CardSetViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardSetViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_card_set, parent, false)
-        return CardSetViewHolder(view)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_card_set, parent, false)
+
+        return CardSetViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: CardSetViewHolder, position: Int) {
-        holder.itemView.apply{
-            val tvTitle = findViewById<TextView>(R.id.tvTitle)
-            val tvCardAmt = findViewById<TextView>(R.id.tvCardAmt)
-            tvTitle.text = sets[position].title
-            tvCardAmt.text = sets[position].cardAmt.toString()
-        }
+        val currentItem = sets[position]
+
+        holder.tvTitle.text = currentItem.title
+        holder.tvCardAmt.text = currentItem.cardAmt
     }
 
-    override fun getItemCount(): Int {
-        return sets.size
+    override fun getItemCount() = sets.size
+
+    inner class CardSetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+        val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
+        val tvCardAmt: TextView = itemView.findViewById(R.id.tvCardAmt)
+
+        init{
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(position)
+            }
+        }
+    }
+    interface OnItemClickListener{
+        fun onItemClick(position: Int)
     }
 }

@@ -2,24 +2,26 @@ package com.example.fc_app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CardSetAdapter.OnItemClickListener {
+
+    private var cardSetList = mutableListOf<CardSet>() //Here is the list that contains all of the created set of cards that will display on the home screen (activity_main).
+    private val adapter = CardSetAdapter(cardSetList, this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val sharedPref = getSharedPreferences("myPref", MODE_PRIVATE)
-        val prefEditor = sharedPref.edit()
 
-        var cardSetList = mutableListOf<CardSet>()
-
-        val adapter = CardSetAdapter(cardSetList)
         val rvSetScreen: RecyclerView = findViewById(R.id.rvSetScreen)
+
         rvSetScreen.adapter = adapter
         rvSetScreen.layoutManager = LinearLayoutManager(this)
 
@@ -38,6 +40,7 @@ class MainActivity : AppCompatActivity() {
                     //Add new set to the home screen
                     val title = editText.text.toString() //Get the text the user typed.
                     val cardTxt = "Card Amount: 0"
+
                     val set = CardSet(title, cardTxt)
                     cardSetList.add(set)
                     adapter.notifyItemInserted(cardSetList.size -1)
@@ -49,5 +52,10 @@ class MainActivity : AppCompatActivity() {
                 show()
             }
         }
+    }
+
+    override fun onItemClick(position: Int) {
+        Toast.makeText(this, "Item $position clicked", Toast.LENGTH_SHORT).show()
+        val clickedItem: CardSet = cardSetList[position]
     }
 }
