@@ -1,5 +1,6 @@
 package com.example.fc_app
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -54,8 +55,15 @@ class MainActivity : AppCompatActivity(), CardSetAdapter.OnItemClickListener {
         }
     }
 
+    //When a certain set is clicked this will do something.
     override fun onItemClick(position: Int) {
         Toast.makeText(this, "Item $position clicked", Toast.LENGTH_SHORT).show()
         val clickedItem: CardSet = cardSetList[position]
+        launchCardSetActivity()
+    }
+
+    private fun launchCardSetActivity(){
+        val intent = Intent(this, CardSetActivity::class.java)
+        startActivity(intent)
     }
 }
