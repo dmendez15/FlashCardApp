@@ -2,6 +2,7 @@ package com.example.fc_app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -15,9 +16,14 @@ class CardSetActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.set_page_layout)
 
+        // Set the TextView to the name of the clicked set.
+        val tvSetName = findViewById<TextView>(R.id.tvSetName)
+        tvSetName.text = intent.getStringExtra("SET_NAME_SESSION_ID") // Session ID from MainActivity
+
         val rvSetScreen: RecyclerView = findViewById(R.id.rv_setLayout)
         rvSetScreen.adapter = adapter
         rvSetScreen.layoutManager = LinearLayoutManager(this)
+
 
         val floatingAB = findViewById<FloatingActionButton>(R.id.faButton2)
         floatingAB.setOnClickListener {

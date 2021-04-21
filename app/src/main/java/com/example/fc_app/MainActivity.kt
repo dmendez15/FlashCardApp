@@ -3,6 +3,7 @@ package com.example.fc_app
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
@@ -59,11 +60,12 @@ class MainActivity : AppCompatActivity(), CardSetAdapter.OnItemClickListener {
     override fun onItemClick(position: Int) {
         Toast.makeText(this, "Item $position clicked", Toast.LENGTH_SHORT).show()
         val clickedItem: CardSet = cardSetList[position]
-        launchCardSetActivity()
+        launchCardSetActivity(position)
     }
 
-    private fun launchCardSetActivity(){
+    private fun launchCardSetActivity(position: Int){
         val intent = Intent(this, CardSetActivity::class.java)
+        intent.putExtra("SET_NAME_SESSION_ID", cardSetList[position].title) // Used to pass the flashcard set name to the CardSetActivity.
         startActivity(intent)
     }
 }
