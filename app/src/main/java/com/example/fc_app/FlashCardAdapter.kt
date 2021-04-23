@@ -37,11 +37,11 @@ class FlashCardAdapter(private val sets: List<FlashCard>, private val listener: 
             val currentItem = sets[position]
             if (position != RecyclerView.NO_POSITION){
                 if (flipped){
-                    tvFacingSide.text = sets[position].sideB
+                    tvFacingSide.text = currentItem.sideB
                     flipped = false
                 }
                 else{
-                    tvFacingSide.text = sets[position].sideA
+                    tvFacingSide.text = currentItem.sideA
                     flipped = true
                 }
 
