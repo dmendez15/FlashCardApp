@@ -1,13 +1,12 @@
 package com.example.fc_app
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -16,6 +15,7 @@ class MainActivity : AppCompatActivity(), CardSetAdapter.OnItemClickListener {
 
     private var cardSetList = mutableListOf<CardSet>() //Here is the list that contains all of the created set of cards that will display on the home screen (activity_main).
     private val adapter = CardSetAdapter(cardSetList, this)
+    var sharedPreferences: SharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,21 +33,21 @@ class MainActivity : AppCompatActivity(), CardSetAdapter.OnItemClickListener {
         floatingAB.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             val inflater = layoutInflater
-            val dialogLayout = inflater.inflate(R.layout.new_set_dialouge_box,null)
+            val dialogLayout = inflater.inflate(R.layout.new_set_dialouge_box, null)
             val editText = dialogLayout.findViewById<EditText>(R.id.et_setName)
 
             with(builder){
                 setTitle("Create new set")
-                setPositiveButton("Save"){dialog, which ->
+                setPositiveButton("Save"){ dialog, which ->
                     //Add new set to the home screen
                     val title = editText.text.toString() //Get the text the user typed.
                     val cardTxt = "Card Amount: 0"
 
                     val set = CardSet(title, cardTxt)
                     cardSetList.add(set)
-                    adapter.notifyItemInserted(cardSetList.size -1)
+                    adapter.notifyItemInserted(cardSetList.size - 1)
                 }
-                setNegativeButton("Cancel"){dialog, which ->
+                setNegativeButton("Cancel"){ dialog, which ->
                     //Cancel
                 }
                 setView(dialogLayout)
@@ -61,6 +61,23 @@ class MainActivity : AppCompatActivity(), CardSetAdapter.OnItemClickListener {
         Toast.makeText(this, "Item $position clicked", Toast.LENGTH_SHORT).show()
         val clickedItem: CardSet = cardSetList[position]
         launchCardSetActivity(position)
+    }
+
+    //After the app is quit and the user relaunch the app, all the previous changes on number of
+    //flashcards sets and flashcards itself are still there
+    override fun onResume() {
+        super.onResume()
+        //Fetching the stored data from the SharedPreference
+        val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val s1 = sh.getString(this.cardSetList.toString(), "")
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val myEdit = sharedPreferences.edit()
+        myEdit.apply()
     }
 
     private fun launchCardSetActivity(position: Int){
