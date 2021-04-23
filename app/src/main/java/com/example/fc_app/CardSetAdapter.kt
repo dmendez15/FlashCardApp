@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 class CardSetAdapter(private val sets: List<CardSet>, private val listener: OnItemClickListener) : RecyclerView.Adapter<CardSetAdapter.CardSetViewHolder>(){
@@ -43,4 +44,5 @@ class CardSetAdapter(private val sets: List<CardSet>, private val listener: OnIt
     interface OnItemClickListener{
         fun onItemClick(position: Int)
     }
+
 }

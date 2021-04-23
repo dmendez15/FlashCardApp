@@ -11,6 +11,7 @@ class CardSetActivity : AppCompatActivity() {
 
     private var cardSetList = mutableListOf<FlashCard>() //Here is the list that contains all of the created set of cards that will display on the home screen (activity_main).
     private val adapter = FlashCardAdapter(cardSetList, this)
+    private var cardID: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +28,7 @@ class CardSetActivity : AppCompatActivity() {
 
         val floatingAB = findViewById<FloatingActionButton>(R.id.faButton2)
         floatingAB.setOnClickListener {
-            cardSetList.add(FlashCard(1))
+            cardSetList.add(FlashCard("", ""))
             adapter.notifyItemInserted(cardSetList.size -1)
         }
     }

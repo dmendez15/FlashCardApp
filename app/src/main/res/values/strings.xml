@@ -3,4 +3,6 @@
     <string name="app_title">Flash Card</string>
     <string name="btn_desc">Create a new set</string>
     <string name="new_name">Enter new set name</string>
+    <string name="sideAHint">Side A</string>
+    <string name="sideBHint">Side B</string>
 </resources>
