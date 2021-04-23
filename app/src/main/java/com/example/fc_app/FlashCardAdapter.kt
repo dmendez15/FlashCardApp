@@ -4,9 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class FlashCardAdapter(private val sets: List<FlashCard>, cardSetActivity: CardSetActivity) : RecyclerView.Adapter<FlashCardAdapter.FlashCardViewHolder>(){
+class FlashCardAdapter(private val sets: List<FlashCard>, private val listener: OnItemClickListener) : RecyclerView.Adapter<FlashCardAdapter.FlashCardViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FlashCardViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.flash_card, parent, false)
@@ -17,16 +19,37 @@ class FlashCardAdapter(private val sets: List<FlashCard>, cardSetActivity: CardS
     override fun onBindViewHolder(holder: FlashCardViewHolder, position: Int) {
         val currentItem = sets[position]
 
-        holder.etSideA.setText(currentItem.sideA)
-        holder.etSideB.setText(currentItem.sideB)
-
+        holder.tvFacingSide.text = currentItem.sideA
     }
 
     override fun getItemCount() = sets.size
 
-    inner class FlashCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val etSideA: EditText = itemView.findViewById(R.id.etSideA)
-        val etSideB: EditText = itemView.findViewById(R.id.etSideB)
+    inner class FlashCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+        val tvFacingSide: TextView = itemView.findViewById(R.id.tvFacingSide)
+        var flipped: Boolean = true
 
+        init{
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            val currentItem = sets[position]
+            if (position != RecyclerView.NO_POSITION){
+                if (flipped){
+                    tvFacingSide.text = sets[position].sideB
+                    flipped = false
+                }
+                else{
+                    tvFacingSide.text = sets[position].sideA
+                    flipped = true
+                }
+
+                listener.onItemClick(position)
+            }
+        }
+    }
+    interface OnItemClickListener{
+        fun onItemClick(position: Int)
     }
 }
