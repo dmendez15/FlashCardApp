@@ -3,6 +3,7 @@ package com.example.fc_app
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -23,7 +24,7 @@ class CardSetAdapter(private val sets: List<CardSet>, private val listener: OnIt
 
     override fun getItemCount() = sets.size
 
-    inner class CardSetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    inner class CardSetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
         val tvCardAmt: TextView = itemView.findViewById(R.id.tvCardAmt)
 
@@ -37,6 +38,7 @@ class CardSetAdapter(private val sets: List<CardSet>, private val listener: OnIt
                 listener.onItemClick(position)
             }
         }
+
     }
     interface OnItemClickListener{
         fun onItemClick(position: Int)
