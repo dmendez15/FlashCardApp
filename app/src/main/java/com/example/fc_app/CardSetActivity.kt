@@ -31,4 +31,9 @@ class CardSetActivity : AppCompatActivity() {
             adapter.notifyItemInserted(cardSetList.size -1)
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        //TODO code me!
+    }
 }

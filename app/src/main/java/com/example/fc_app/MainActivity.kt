@@ -29,6 +29,11 @@ class MainActivity : AppCompatActivity(), CardSetAdapter.OnItemClickListener {
         rvSetScreen.adapter = adapter
         rvSetScreen.layoutManager = LinearLayoutManager(this)
 
+        //Fetching the stored data from the SharedPreference
+        val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val s1 = sh.getString(this.cardSetList.toString(), "")
+        //TODO Code to retrieve data from sharedPreferences and place it on the recycler view.
+
         //Dialog that will create a new set of cards.
         //When the floating action button is clicked, create a brand new set.
         val floatingAB = findViewById<FloatingActionButton>(R.id.floatingActionButton)
@@ -63,6 +68,15 @@ class MainActivity : AppCompatActivity(), CardSetAdapter.OnItemClickListener {
         Toast.makeText(this, "Item $position clicked", Toast.LENGTH_SHORT).show()
         val clickedItem: CardSet = cardSetList[position]
         launchCardSetActivity(position)
+    }
+
+    // Called when app is closed
+    override fun onDestroy() {
+        super.onDestroy()
+        val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val myEdit = sharedPreferences.edit()
+        // TODO Add code to store the values of cardSetList to sharedPreferences
+        myEdit.apply()
     }
 
     private fun launchCardSetActivity(position: Int){
