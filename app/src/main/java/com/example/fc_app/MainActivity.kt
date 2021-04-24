@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), CardSetAdapter.OnItemClickListener {
         rvSetScreen.adapter = adapter
         rvSetScreen.layoutManager = LinearLayoutManager(this)
 
-        //loadData()
+        loadData()
 
         //Dialog that will create a new set of cards.
         //When the floating action button is clicked, create a brand new set.
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), CardSetAdapter.OnItemClickListener {
                     val set = CardSet(title, cardTxt)
                     cardSetList.add(set)
                     adapter.notifyItemInserted(cardSetList.size - 1)
-                    //saveData()
+                    saveData()
                 }
                 setNegativeButton("Cancel"){ dialog, which ->
                     //Cancel

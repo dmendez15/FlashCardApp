@@ -10,6 +10,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 
 class CardSetActivity : AppCompatActivity(), FlashCardAdapter.OnItemClickListener {
 
@@ -29,8 +32,7 @@ class CardSetActivity : AppCompatActivity(), FlashCardAdapter.OnItemClickListene
         rvSetScreen.adapter = adapter
         rvSetScreen.layoutManager = LinearLayoutManager(this)
 
-        val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        val s1 = sh.getString(this.cardSetList.toString(), "")
+        loadData()
 
 
         val floatingAB = findViewById<FloatingActionButton>(R.id.faButton2)
@@ -50,6 +52,7 @@ class CardSetActivity : AppCompatActivity(), FlashCardAdapter.OnItemClickListene
 
                     cardSetList.add(FlashCard(textA,textB))
                     adapter.notifyItemInserted(cardSetList.size -1)
+                    savaData()
                 }
                 setNegativeButton("Cancel"){dialog, which ->
                     //Cancel
@@ -62,12 +65,26 @@ class CardSetActivity : AppCompatActivity(), FlashCardAdapter.OnItemClickListene
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        //TODO code me!
-        val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        val myEdit = sharedPreferences.edit()
-        myEdit.apply()
+    fun savaData() {
+        val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val json = gson.toJson(cardSetList)
+        editor.putString("task list", json)
+        editor.apply()
+        Toast.makeText(this, "Item Saved", Toast.LENGTH_SHORT).show()
+    }
+
+    fun loadData() {
+        val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
+        val gson = Gson()
+        val json = sharedPreferences.getString("task list", null)
+        val type: Type = object : TypeToken<ArrayList<CardSet?>?>() {}.type
+        cardSetList = gson.fromJson<Any>(json,type) as ArrayList<FlashCard>
+        if (cardSetList == null) {
+            cardSetList = ArrayList()
+        }
+        Toast.makeText(this, "Item Loaded", Toast.LENGTH_SHORT).show()
     }
 
     override fun onItemClick(position: Int) {
