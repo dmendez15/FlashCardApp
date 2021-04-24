@@ -9,9 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import java.lang.reflect.Type
 
 
 class MainActivity : AppCompatActivity(), CardSetAdapter.OnItemClickListener {
@@ -27,8 +24,6 @@ class MainActivity : AppCompatActivity(), CardSetAdapter.OnItemClickListener {
 
         rvSetScreen.adapter = adapter
         rvSetScreen.layoutManager = LinearLayoutManager(this)
-
-        //loadData()
 
         //Dialog that will create a new set of cards.
         //When the floating action button is clicked, create a brand new set.
@@ -49,7 +44,6 @@ class MainActivity : AppCompatActivity(), CardSetAdapter.OnItemClickListener {
                     val set = CardSet(title, cardTxt)
                     cardSetList.add(set)
                     adapter.notifyItemInserted(cardSetList.size - 1)
-                    //saveData()
                 }
                 setNegativeButton("Cancel"){ dialog, which ->
                     //Cancel
@@ -58,28 +52,6 @@ class MainActivity : AppCompatActivity(), CardSetAdapter.OnItemClickListener {
                 show()
             }
         }
-    }
-
-    fun saveData(){
-        val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        val gson = Gson()
-        val json = gson.toJson(cardSetList)
-        editor.putString("task list", json)
-        editor.apply()
-        Toast.makeText(this, "Item Saved", Toast.LENGTH_SHORT).show()
-    }
-
-    fun loadData() {
-        val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
-        val gson = Gson()
-        val json = sharedPreferences.getString("task list", null)
-        val type: Type = object : TypeToken<ArrayList<CardSet?>?>() {}.type
-        cardSetList = gson.fromJson<Any>(json, type) as ArrayList<CardSet>
-        if (cardSetList == null) {
-            cardSetList = ArrayList()
-        }
-        Toast.makeText(this, "Item Loaded", Toast.LENGTH_SHORT).show()
     }
 
     //When a certain set is clicked this will do something.
