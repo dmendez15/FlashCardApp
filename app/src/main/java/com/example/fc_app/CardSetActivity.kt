@@ -29,6 +29,9 @@ class CardSetActivity : AppCompatActivity(), FlashCardAdapter.OnItemClickListene
         rvSetScreen.adapter = adapter
         rvSetScreen.layoutManager = LinearLayoutManager(this)
 
+        val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val s1 = sh.getString(this.cardSetList.toString(), "")
+
 
         val floatingAB = findViewById<FloatingActionButton>(R.id.faButton2)
         floatingAB.setOnClickListener {
@@ -62,6 +65,9 @@ class CardSetActivity : AppCompatActivity(), FlashCardAdapter.OnItemClickListene
     override fun onDestroy() {
         super.onDestroy()
         //TODO code me!
+        val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val myEdit = sharedPreferences.edit()
+        myEdit.apply()
     }
 
     override fun onItemClick(position: Int) {
