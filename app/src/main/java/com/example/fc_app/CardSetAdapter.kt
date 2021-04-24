@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,9 @@ class CardSetAdapter(private val sets: List<CardSet>, private val listener: OnIt
 
         holder.tvTitle.text = currentItem.title
         holder.tvCardAmt.text = currentItem.cardAmt
+        holder.btnDelete.setOnClickListener(){
+            listener.onDeleteClick(position)
+        }
     }
 
     override fun getItemCount() = sets.size
@@ -28,6 +32,7 @@ class CardSetAdapter(private val sets: List<CardSet>, private val listener: OnIt
     inner class CardSetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
         val tvCardAmt: TextView = itemView.findViewById(R.id.tvCardAmt)
+        val btnDelete: ImageButton = itemView.findViewById(R.id.btnDelete)
 
         init{
             itemView.setOnClickListener(this)
@@ -43,6 +48,7 @@ class CardSetAdapter(private val sets: List<CardSet>, private val listener: OnIt
     }
     interface OnItemClickListener{
         fun onItemClick(position: Int)
+        fun onDeleteClick(position: Int)
     }
 
 }

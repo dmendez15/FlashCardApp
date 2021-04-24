@@ -43,6 +43,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/btn_delete"
+            android:clickable="true"
             android:contentDescription="Delete's the selected card"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
